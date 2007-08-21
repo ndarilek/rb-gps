@@ -15,6 +15,16 @@ module Gps
 			@last_course = 0
 		end
 
+		# Factory for creating a +Receiver+.
+		# Accepts an implementation and a hash of options, both optional. If no 
+		# implementation is provided, the first is used by default. Implementations are in 
+		# the module +Gps::Receivers+.
+		def self.create(*args)
+			implementation = args[0].respond_to?(:capitalize)? Gps::Receivers.const_get(args[0].capitalize): Gps::Receivers.constants[0]
+			options = args[0].kind_of?(Hash)? args[0]: args[1]
+			implementation.new(options)
+		end
+
 		# Sets the position from an array of the form [latitude, longitude], calling the 
 		# _on_position_change_ callback if necessary.
 		def position=(value)
@@ -82,5 +92,8 @@ module Gps
 		def position_change
 			(@latitude-@last_latitude_position_change).abs+(@longitude-@last_longitude_position_change).abs
 		end
+	end
+
+	module Receivers
 	end
 end

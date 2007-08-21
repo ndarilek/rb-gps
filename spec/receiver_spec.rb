@@ -2,6 +2,23 @@ require File.dirname(__FILE__) + '/spec_helper.rb'
 
 describe Gps::Receiver do
 
+	it "creates an instance of the first receiver in Gps::Receivers with specified options when its create method is called" do
+		First = mock("first")
+		Second = mock("second")
+		Gps::Receivers.should_receive(:constants).and_return([First, Second])
+		options = {:foo => :bar}
+		First.should_receive(:new).with(options)
+		Gps::Receiver.create(options)
+	end
+
+	it "creates an instance of the specified receiver in Gps::Receivers with specified options when its create method is called" do
+		receiver = mock("receiver")
+		Gps::Receivers.should_receive(:const_get).with("Receiver").and_return(receiver)
+		options = {:foo => :bar}
+		receiver.should_receive(:new).with(options)
+		Gps::Receiver.create("receiver", options)
+	end
+
 	it "supports setting latitude and longitude via the position attribute" do
 		gps = Gps::Receiver.new
 		gps.position = [20, 30]
