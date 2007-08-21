@@ -21,23 +21,25 @@ module Gps::Receivers
 		end
 
 		def update
-			line = @socket.gets.chomp.split(",")[1]
-			return if !line
-			types = []
-			data = []
-			line.split(",").each do |sentence|
-				sentence.split("=").each_with_index  do |d, i|
-					if i%2 == 0
-						types << d
-					else
-						data << d
+			while not @socket.eof?
+				line = @socket.gets.chomp.split(",")[1]
+				return if !line
+				types = []
+				data = []
+				line.split(",").each do |sentence|
+					sentence.split("=").each_with_index  do |d, i|
+						if i%2 == 0
+							types << d
+						else
+							data << d
+						end
 					end
 				end
-			end
-			types.each_with_index do |type, i|
-				begin
-					send("parse_#{type.downcase}", data[i])
-				rescue NoMethodError
+				types.each_with_index do |type, i|
+					begin
+						send("parse_#{type.downcase}", data[i])
+					rescue NoMethodError
+					end
 				end
 			end
 			super
