@@ -24,20 +24,19 @@ module Gps::Receivers
 			line = @socket.gets.chomp.split(",")[1]
 			return if !line
 			types = []
-			datum = []
+			data = []
 			line.split(",").each do |sentence|
 				sentence.split("=").each_with_index  do |d, i|
 					if i%2 == 0
 						types << d
 					else
-						datum << d
+						data << d
 					end
 				end
 			end
 			types.each_with_index do |type, i|
-				params = datum[i].split
 				begin
-					send("parse_#{type.downcase}", params)
+					send("parse_#{type.downcase}", data[i])
 				rescue NoMethodError
 				end
 			end
@@ -45,7 +44,8 @@ module Gps::Receivers
 		end
 
 		private
-		def parse_o(params)
+		def parse_o(data)
+			params = data.split
 			@last_tag = params[0]
 			@timestamp = params[1].to_f
 			@timestamp_error_estimate = params[2].to_f
@@ -60,6 +60,10 @@ module Gps::Receivers
 			@course_error_estimate = params[11].to_f
 			@speed_error_estimate = params[12].to_f
 			@climb_error_estimate = params[13].to_f
+		end
+
+		def parse_y(data)
+			@satellites = data.split(":")[0].split[-1].to_i
 		end
 	end
 end

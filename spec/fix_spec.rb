@@ -22,5 +22,6 @@ describe Gps::Fix do
 		fix.course_error_estimate.should == nil
 		fix.speed_error_estimate.should == nil
 		fix.climb_error_estimate.should == nil
+		fix.satellites.should == 0
 	end
 end
