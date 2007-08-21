@@ -28,9 +28,11 @@ describe Gps::Receivers::Gpsd do
 		socket = mock("socket")
 		TCPSocket.should_receive(:new).with(gps.host, gps.port).and_return(socket)
 		socket.should_receive(:puts).with("w+")
+		socket.should_receive(:eof?).any_number_of_times.and_return(false, true)
 		socket.should_receive(:gets).any_number_of_times.and_return(line)
 		gps.start
 		params = line.chomp.split("=")[1].split
+		sleep(0.1)
 		gps.last_tag.should == params[0]
 		gps.timestamp.should == params[1].to_f
 		gps.timestamp_error_estimate.should == params[2].to_f
@@ -47,16 +49,17 @@ describe Gps::Receivers::Gpsd do
 		gps.climb_error_estimate.should == params[13].to_f
 		end
 
-
-	it "correctly parses O sentences on update" do
+	it "correctly parses Y sentences on update" do
 		line = "GPSD,Y=MID4 1187698430.040 9:9 31 58 41 1:14 62 198 45 1:1 26 214 41 1:19 32 264 42 1:3 16 232 38 1:11 14 310 38 1:22 75 85 47 1:18 35 90 42 1:138 28 171 38 0:\r\n"
 		gps = Gps::Receiver.create
 		socket = mock("socket")
 		TCPSocket.should_receive(:new).with(gps.host, gps.port).and_return(socket)
 		socket.should_receive(:puts).with("w+")
+		socket.should_receive(:eof?).any_number_of_times.and_return(false, true)
 		socket.should_receive(:gets).any_number_of_times.and_return(line)
 		gps.start
 		params = line.chomp.split("=")[1].split(":")
+		sleep(0.1)
 		gps.satellites.should == params[0].split[-1].to_i
 	end
 end
