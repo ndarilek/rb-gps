@@ -1,11 +1,11 @@
 require 'gps/version'
 
-AUTHOR = 'FIXME full name'  # can also be an array of Authors
-EMAIL = "FIXME email"
-DESCRIPTION = "description of gem"
-GEM_NAME = 'gps' # what ppl will type to install your gem
-RUBYFORGE_PROJECT = 'gps' # The unix name for your project
-HOMEPATH = "http://#{RUBYFORGE_PROJECT}.rubyforge.org"
+AUTHOR = "Nolan Darilek"  # can also be an array of Authors
+EMAIL = "nolan@thewordnerd.info"
+DESCRIPTION = "Provides an elegant interface to data from GPS receivers"
+GEM_NAME = "gps"
+RUBYFORGE_PROJECT = "hermes" # The unix name for your project
+HOMEPATH = "http://hermes-gps.info"
 DOWNLOAD_PATH = "http://rubyforge.org/projects/#{RUBYFORGE_PROJECT}"
 
 @config_file = "~/.rubyforge/user-config.yml"
@@ -27,10 +27,9 @@ Run 'rubyforge setup' to prepare your env for access to Rubyforge
   RUBYFORGE_USERNAME.replace @config["username"]
 end
 
-REV = nil 
-# UNCOMMENT IF REQUIRED: 
-# REV = `svn info`.each {|line| if line =~ /^Revision:/ then k,v = line.split(': '); break v.chomp; else next; end} rescue nil
-VERS = Gps::VERSION::STRING + (REV ? ".#{REV}" : "")
+REV = ENV["SNAPSHOT"]? ".#{`bzr revno`.chomp}": ""
+VERS = Gps::VERSION::STRING+REV
+
 RDOC_OPTS = ['--quiet', '--title', 'gps documentation',
     "--opname", "index.html",
     "--line-numbers", 
@@ -57,13 +56,12 @@ hoe = Hoe.new(GEM_NAME, VERS) do |p|
   p.rubyforge_name = RUBYFORGE_PROJECT if RUBYFORGE_PROJECT
   p.test_globs = ["test/**/test_*.rb"]
   p.clean_globs |= ['**/.*.sw?', '*.gem', '.config', '**/.DS_Store']  #An array of file patterns to delete on clean.
-  
+
   # == Optional
   p.changes = p.paragraphs_of("History.txt", 0..1).join("\\n\\n")
   #p.extra_deps = []     # An array of rubygem dependencies [name, version], e.g. [ ['active_support', '>= 1.3.1'] ]
-  
+
   #p.spec_extras = {}    # A hash of extra values to set in the gemspec.
-  
 end
 
 CHANGES = hoe.paragraphs_of('History.txt', 0..1).join("\\n\\n")
