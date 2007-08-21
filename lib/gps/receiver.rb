@@ -6,13 +6,12 @@ module Gps
 
 		def initialize(options = {})
 			super
-			@on_position_change = nil
-			@last_latitude_position_change = @last_longitude_position_change = 0
+			@last_latitude = @last_longitude = 0
 			@position_change_threshold = 0
-			@on_speed_change = nil
 			@last_speed = 0
-			@on_course_change = nil
 			@last_course = 0
+			@last_altitude = 0
+			@last_satellites = 0
 		end
 
 		# Factory for creating a +Receiver+.
@@ -49,6 +48,16 @@ module Gps
 			@on_course_change = block
 		end
 
+		# Called when the altitude changes.
+		def on_altitude_change(&block)
+			@on_altitude_change = block
+		end
+
+		# Called when the number of visible satellites changes.
+		def on_satellites_change(&block)
+			@on_satellites_change = block
+		end
+
 		# Override this in children. Opens the connection, device, etc.
 		def start
 			@thread = Thread.new do
@@ -77,20 +86,23 @@ module Gps
 			@last_speed = @speed
 			@on_course_change.call if @on_course_change and @course != @last_course
 			@last_course = @course
-
+			@on_altitude_change.call if @on_altitude_change and @altitude != @last_altitude
+			@last_altitude = @altitude
+			@on_satellites_change.call if @on_satellites_change and @satellites != @last_satellites
+			@last_satellites = @satellites
 		end
 
 		private
 		def call_position_change_if_necessary
 			if position_change > @position_change_threshold
-				@last_position_change_latitude = @latitude
-				@last_position_change_longitude = @longitude
+				@last_latitude = @latitude
+				@last_longitude = @longitude
 				@on_position_change.call if @on_position_change
 			end
 		end
 
 		def position_change
-			(@latitude-@last_latitude_position_change).abs+(@longitude-@last_longitude_position_change).abs
+			(@latitude-@last_latitude).abs+(@longitude-@last_longitude).abs
 		end
 	end
 

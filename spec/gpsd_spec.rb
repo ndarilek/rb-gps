@@ -28,7 +28,6 @@ describe Gps::Receivers::Gpsd do
 		socket = mock("socket")
 		TCPSocket.should_receive(:new).with(gps.host, gps.port).and_return(socket)
 		socket.should_receive(:puts).with("w+")
-		socket.should_receive(:eof?).any_number_of_times.and_return(false, true)
 		socket.should_receive(:gets).any_number_of_times.and_return(line)
 		gps.start
 		params = line.chomp.split("=")[1].split
@@ -55,7 +54,6 @@ describe Gps::Receivers::Gpsd do
 		socket = mock("socket")
 		TCPSocket.should_receive(:new).with(gps.host, gps.port).and_return(socket)
 		socket.should_receive(:puts).with("w+")
-		socket.should_receive(:eof?).any_number_of_times.and_return(false, true)
 		socket.should_receive(:gets).any_number_of_times.and_return(line)
 		gps.start
 		params = line.chomp.split("=")[1].split(":")

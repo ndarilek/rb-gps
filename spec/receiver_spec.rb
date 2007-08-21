@@ -61,19 +61,25 @@ describe Gps::Receiver do
 		called.should == true
 	end
 
-	it "should call position, speed and course change callbacks when updated, if necessary" do
+	it "should call position, speed , satellite and course change callbacks when updated, if necessary" do
 		gps = Gps::Receiver.new
-		course_changed = speed_changed = position_changed = nil
+		course_changed = speed_changed = position_changed = altitude_changed = satellites_changed = nil
 		gps.on_position_change { position_changed = true }
 		gps.on_speed_change { speed_changed = true }
 		gps.on_course_change { course_changed = true }
+		gps.on_altitude_change { altitude_changed = true }
+		gps.on_satellites_change { satellites_changed = true }
 		gps.instance_eval("@latitude = 5")
 		gps.instance_eval("@speed = 10")
 		gps.instance_eval("@course = 1")
+		gps.instance_eval("@altitude = 1000")
+		gps.instance_eval("@satellites = 15")
 		gps.update
 		course_changed.should == true
 		position_changed.should == true
 		speed_changed.should == true
+		altitude_changed.should == true
+		satellites_changed.should == true
 	end
 
 	it "should spawn a new, updating thread when started" do
