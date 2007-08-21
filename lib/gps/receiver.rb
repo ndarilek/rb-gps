@@ -4,7 +4,7 @@ module Gps
 	class Receiver
 		include Fix
 
-		def initialize
+		def initialize(options = {})
 			super
 			@on_position_change = nil
 			@last_latitude_position_change = @last_longitude_position_change = 0
@@ -19,9 +19,9 @@ module Gps
 		# Accepts an implementation and a hash of options, both optional. If no 
 		# implementation is provided, the first is used by default. Implementations are in 
 		# the module +Gps::Receivers+.
-		def self.create(*args)
-			implementation = args[0].respond_to?(:capitalize)? Gps::Receivers.const_get(args[0].capitalize): Gps::Receivers.constants[0]
-			options = args[0].kind_of?(Hash)? args[0]: args[1]
+		def self.create(arg = nil, args = {})
+			implementation = arg.respond_to?(:capitalize)? Receivers.const_get(arg.capitalize): Receivers.const_get(Receivers.constants[0])
+			options = arg.kind_of?(Hash)? arg: args
 			implementation.new(options)
 		end
 

@@ -6,6 +6,7 @@ describe Gps::Receiver do
 		First = mock("first")
 		Second = mock("second")
 		Gps::Receivers.should_receive(:constants).and_return([First, Second])
+		Gps::Receivers.should_receive(:const_get).with(First).and_return(First)
 		options = {:foo => :bar}
 		First.should_receive(:new).with(options)
 		Gps::Receiver.create(options)
