@@ -14,7 +14,8 @@ if Object.const_defined?("Gem")
 	rescue LoadError
 	end
 end
-
-Dir["#{File.dirname(__FILE__)}/gps/**/*.rb"].each { |f| require f }
+require "gps/fix"
+require "gps/receiver"
+require "gps/receivers/gpsd"
 
 GemPlugin::Manager.instance.load "gps" => GemPlugin::INCLUDE if Object.const_defined?("GemPlugin")
