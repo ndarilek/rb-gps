@@ -33,6 +33,7 @@ module Gps
 		end
 
 		# Called on position change, but only if the change is greater than +threshold+ degrees.
+		# The block receives the amount of change in degrees.
 		def on_position_change(threshold = 0, &block)
 			@position_change_threshold = threshold
 			@on_position_change = block
@@ -95,9 +96,9 @@ module Gps
 		private
 		def call_position_change_if_necessary
 			if position_change > @position_change_threshold
+				@on_position_change.call(position_change) if @on_position_change
 				@last_latitude = @latitude
 				@last_longitude = @longitude
-				@on_position_change.call if @on_position_change
 			end
 		end
 

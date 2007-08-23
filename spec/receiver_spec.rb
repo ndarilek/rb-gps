@@ -64,7 +64,8 @@ describe Gps::Receiver do
 	it "should call position, speed , satellite and course change callbacks when updated, if necessary" do
 		gps = Gps::Receiver.new
 		course_changed = speed_changed = position_changed = altitude_changed = satellites_changed = nil
-		gps.on_position_change { position_changed = true }
+		degrees_changed = 0
+		gps.on_position_change { |degrees| position_changed = true; degrees_changed = degrees }
 		gps.on_speed_change { speed_changed = true }
 		gps.on_course_change { course_changed = true }
 		gps.on_altitude_change { altitude_changed = true }
@@ -77,6 +78,7 @@ describe Gps::Receiver do
 		gps.update
 		course_changed.should == true
 		position_changed.should == true
+		degrees_changed.should == 5
 		speed_changed.should == true
 		altitude_changed.should == true
 		satellites_changed.should == true
