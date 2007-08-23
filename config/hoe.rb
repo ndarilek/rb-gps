@@ -2,7 +2,7 @@ require 'gps/version'
 
 AUTHOR = "Nolan Darilek"  # can also be an array of Authors
 EMAIL = "nolan@thewordnerd.info"
-DESCRIPTION = "Provides an elegant interface to data from GPS receivers"
+DESCRIPTION = "An interface to GPS receivers"
 GEM_NAME = "gps"
 RUBYFORGE_PROJECT = "hermes" # The unix name for your project
 HOMEPATH = "http://hermes-gps.info"
@@ -51,7 +51,7 @@ hoe = Hoe.new(GEM_NAME, VERS) do |p|
   p.author = AUTHOR 
   p.description = DESCRIPTION
   p.email = EMAIL
-  p.summary = DESCRIPTION
+  p.summary = "This library provides an elegant interface to data from GPS receivers. An extensible architecture simplifies adding new receiver types, with a GPSD receiver already written. Additionally, the API supports registering callbacks triggered on change of position, course, altitude and visible satellites."
   p.url = HOMEPATH
   p.rubyforge_name = RUBYFORGE_PROJECT if RUBYFORGE_PROJECT
   p.test_globs = ["test/**/test_*.rb"]
