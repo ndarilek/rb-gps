@@ -43,7 +43,7 @@ class Hoe
   end 
 end
 
-`bzr inventory --kind=file >#{File.dirname(__FILE__)+"/../Manifest.txt"}`
+`git ls-files >#{File.dirname(__FILE__)+"/../Manifest.txt"}`
 
 # Generate all the Rake tasks
 # Run 'rake -T' to see list of generated tasks (from gem root directory)
