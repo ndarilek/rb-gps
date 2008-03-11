@@ -5,7 +5,7 @@ EMAIL = "nolan@thewordnerd.info"
 DESCRIPTION = "An interface to GPS receivers"
 GEM_NAME = "gps"
 RUBYFORGE_PROJECT = "hermes" # The unix name for your project
-HOMEPATH = "http://hermes-gps.info"
+HOMEPATH = "http://hermes-gps.info/"
 DOWNLOAD_PATH = "http://rubyforge.org/projects/#{RUBYFORGE_PROJECT}"
 
 @config_file = "~/.rubyforge/user-config.yml"
