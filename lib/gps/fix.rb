@@ -29,4 +29,10 @@ module Gps::Fix
     @course = 0
     @satellites = 0
   end
+
+  def to_hash
+    h = {}
+    FIX_ATTRIBUTES.each { |a| h[a] = send(a) }
+    h
+  end
 end
