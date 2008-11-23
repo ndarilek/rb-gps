@@ -6,7 +6,7 @@ This library provides a Ruby interface to GPS receivers. Features include:
 * Event callbacks for position, speed and course change.
 * Plugin architecture. Distribute new +Receiver+ implementations as gems.
 
-Learn more at the [project's homepage](http://hermes-gps.info/wiki/rb-gps/).
+This library is part of the [Hermes](http://hermes-gps.info/) project.
 
 == Installation
 
@@ -20,6 +20,8 @@ ruby setup.rb config
 ruby setup.rb install
 
 == Example usage
+
+For a working example, see the [included web service sample](examples/gps_service.rb).
 
 There are a few simple steps to using this library, but before doing any of them you must first:
 
